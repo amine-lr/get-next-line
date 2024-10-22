@@ -6,7 +6,7 @@
 /*   By: mlarioui <mlarioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 17:13:50 by mlarioui          #+#    #+#             */
-/*   Updated: 2024/10/20 17:15:03 by mlarioui         ###   ########.fr       */
+/*   Updated: 2024/10/22 16:20:53 by mlarioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+#include <fcntl.h>
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
 
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
