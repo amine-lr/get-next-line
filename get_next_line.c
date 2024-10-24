@@ -12,49 +12,45 @@
 
 #include "get_next_line.h"
  
- char *read_and_append(int fd, char *remainder)
+char *init_remainder(char *remainder)
 {
-    char    buffer[BUFFER_SIZE + 1];
-    ssize_t bytes_read;
-    char    *temp;
-	
     if (!remainder)
     {
         remainder = ft_strdup("");
         if (!remainder)
             return (NULL);
     }
-    while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+    return (remainder);
+}
+
+char *read_and_append(int fd, char *remainder)
+{
+    char buffer[BUFFER_SIZE + 1];
+    ssize_t bytes_read;
+    char *temp;
+
+    remainder = init_remainder(remainder);
+    if (!remainder)
+        return (NULL);
+    
+    while (1)
     {
+        bytes_read = read(fd, buffer, BUFFER_SIZE);
+        if (bytes_read <= 0)
+        {
+            if (bytes_read < 0)
+                perror("Error reading file");
+            return (bytes_read == 0 && (!remainder || !*remainder)) ? free(remainder), NULL : remainder;
+        }
         buffer[bytes_read] = '\0';
         temp = remainder;
         remainder = ft_strjoin(remainder, buffer);
         free(temp);
-
-        printf("Buffer read: %s\n", buffer); // Debugging print
-        //printf("Bytes read: %zd\n", bytes_read); // Debugging print
-
         if (ft_strchr(remainder, '\n'))
-            break;
+            return remainder;
     }
-
-    // If bytes_read is less than 0, an error occurred
-    if (bytes_read < 0)
-    {
-        perror("Error reading file");
-        free(remainder);
-        return (NULL);
-    }
-
-    // Check for end of file or no bytes read
-    if (bytes_read == 0 && (!remainder || !*remainder))
-    {
-        free(remainder);
-        return (NULL);
-    }
-
-    return (remainder);
 }
+
 
 char *extract_line(char **remainder)
 {
@@ -94,7 +90,6 @@ char *get_next_line(int fd)
     line = extract_line(&remainder);
     return (line);
 }
-
 /*int	main(void)
 {
 	int		fd;
@@ -113,7 +108,7 @@ char *get_next_line(int fd)
 	}
 	close(fd);
 	return (0);
-}*/ 
+}*/
 /* int main(void)
 {
     int     fd;
