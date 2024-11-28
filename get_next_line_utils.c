@@ -6,18 +6,16 @@
 /*   By: mlarioui <mlarioui@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 17:13:46 by mlarioui          #+#    #+#             */
-/*   Updated: 2024/10/20 17:31:57 by mlarioui         ###   ########.fr       */
+/*   Updated: 2024/11/11 13:07:25 by mlarioui         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "get_next_line.h"
 
-int	ft_strlen(char *s)
+int	ft_strlen(const char *s)
 {
 	size_t	i;
-	
+
 	i = 0;
 	if (!s)
 		return (0);
@@ -82,11 +80,9 @@ char	*ft_strdup(const char *s)
 	char	*dup_s;
 
 	i = 0;
-	len = 0;
+	len = ft_strlen(s);
 	if (!s)
 		return (NULL);
-	while (s[len])
-		len++;
 	dup_s = (char *)malloc((sizeof(char)) * (len + 1));
 	if (!dup_s)
 		return (NULL);
@@ -106,9 +102,7 @@ char	*ft_substr(const char *s, size_t start, size_t len)
 	char	*sub;
 
 	i = 0;
-	s_len = 0;
-	while (s[s_len])
-		s_len++;
+	s_len = ft_strlen(s);
 	if (start >= s_len)
 		return (ft_strdup(""));
 	if (start + len > s_len)
